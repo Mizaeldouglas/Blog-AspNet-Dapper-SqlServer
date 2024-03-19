@@ -1,4 +1,5 @@
 using App_Blog.Models;
+using App_Blog.Repositories;
 using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
 
@@ -6,58 +7,67 @@ namespace App_Blog.Controllers;
 
 public class UserController
 {
-    private const string CONNECTION_STRING = "Server=localhost,1433;Database=Blog;User ID=sa;Password=MyPassword123#;";
-    public static void ReadUsers()
+    public static void GetAllUsers(SqlConnection connection)
     {
-        using (var connection = new SqlConnection(CONNECTION_STRING))
+        var repository = new UserRepository(connection);
+        var users = repository.GetAll();
+
+        foreach (var user in users)
         {
-            var users = connection.GetAll<User>();
-
-            foreach (var user in users)
-            {
-                Console.WriteLine($"Nome: {user.Name}");
-                Console.WriteLine($"Sobre: {user.Bio}");
-                Console.WriteLine($"Email: {user.Email}");
-                Console.WriteLine();
-
-
-            }
+            Console.WriteLine($"Nome: {user.Name}");
+            Console.WriteLine($"Sobre: {user.Bio}");
+            Console.WriteLine($"Email: {user.Email}");
+            Console.WriteLine();
         }
     }
-    
-    public static void ReadUser()
-    {
-        using (var connection = new SqlConnection(CONNECTION_STRING))
-        {
-            var users = connection.Get<User>(1);
 
-            Console.WriteLine(users.Name);
+    public static void GetByIdUser(SqlConnection connections)
+    {
+        var repository = new UserRepository(connections);
+        Console.WriteLine("Enter Id");
+        var byId = Console.ReadLine();
+
+        if (byId != null)
+        {
+            var users = repository.GetById(int.Parse(byId));
+
+            Console.WriteLine($"Nome: {users.Name}");
+            Console.WriteLine($"Sobre: {users.Bio}");
+            Console.WriteLine($"Email: {users.Email}");
+            Console.WriteLine();
         }
     }
-    
-    public static void CreateUser()
+
+    public static void CreateUser(SqlConnection connection)
     {
+        var user = new User();
 
-        var user = new User()
-        {
-            Bio = "Equipe Mizael",
-            Name = "Equipe",
-            Email = "email@email.com",
-            Image = "image.png",
-            Slug = "equipe de suporte",
-            PasswordHash = "Hh247a8PASA@_FA9#2233#@"
-        };
-        using (var connection = new SqlConnection(CONNECTION_STRING))
-        {
-            var users = connection.Insert<User>(user);
+        Console.WriteLine("Enter Name: ");
+        user.Name = Console.ReadLine()!;
 
-            Console.WriteLine("Cadastro feito com sucesso!!");
-        }
+        Console.WriteLine("Enter Email: ");
+        user.Email = Console.ReadLine()!;
+
+        Console.WriteLine("Enter Bio: ");
+        user.Bio = Console.ReadLine()!;
+
+        Console.WriteLine("Enter link image: ");
+        user.Image = Console.ReadLine()!;
+
+        Console.WriteLine("Enter Slug: ");
+        user.Slug = Console.ReadLine()!;
+
+        Console.WriteLine("Enter PasswordHash: ");
+        user.PasswordHash = Console.ReadLine()!;
+
+
+        var users = connection.Insert<User>(user);
+
+        Console.WriteLine("Cadastro feito com sucesso!!");
     }
-    
-    public static void UpdateUser()
-    {
 
+    public static void UpdateUser(SqlConnection connection)
+    {
         var user = new User()
         {
             Id = 2,
@@ -68,22 +78,17 @@ public class UserController
             Slug = "equipe de suporte do mizael Douglas",
             PasswordHash = "Hh247a8asdasfasgha22124PASA@_FA9#2233#@"
         };
-        using (var connection = new SqlConnection(CONNECTION_STRING))
-        {
-            var users = connection.Update<User>(user);
 
-            Console.WriteLine("Update feito com sucesso!!");
-        }
+        var users = connection.Update<User>(user);
+
+        Console.WriteLine("Update feito com sucesso!!");
     }
-    
-    public static void DeleteUser()
-    {
-        using (var connection = new SqlConnection(CONNECTION_STRING))
-        {
-            var user = connection.Get<User>(1);
-            connection.Delete<User>(user);
 
-            Console.WriteLine($"Usuario {user.Name} deletado com sucesso!!");
-        }
+    public static void DeleteUser(SqlConnection connection)
+    {
+        var user = connection.Get<User>(1);
+        connection.Delete<User>(user);
+
+        Console.WriteLine($"Usuario {user.Name} deletado com sucesso!!");
     }
 }
