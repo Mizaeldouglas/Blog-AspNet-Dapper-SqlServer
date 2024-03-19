@@ -1,5 +1,8 @@
+using Dapper.Contrib.Extensions;
+
 namespace App_Blog.Models;
 
+[Table("[User]")]
 public class User
 {
     public int Id { get; set; }
