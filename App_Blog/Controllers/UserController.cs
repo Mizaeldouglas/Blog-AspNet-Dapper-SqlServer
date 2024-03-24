@@ -1,3 +1,4 @@
+using System.Data;
 using App_Blog.Models;
 using App_Blog.Repositories;
 using Dapper.Contrib.Extensions;
@@ -65,28 +66,68 @@ public class UserController
 
         Console.WriteLine("Cadastro feito com sucesso!!");
     }
-
+    
     public static void UpdateUser(SqlConnection connection)
     {
-        var user = new User()
+        var repository = new UserRepository(connection);
+
+        Console.WriteLine("Digite o ID do usuário que você deseja atualizar:");
+        var userId = int.Parse(Console.ReadLine());
+
+        var user = repository.GetById(userId);
+
+        if (user == null)
         {
-            Id = 2,
-            Bio = "Suport Mizael",
-            Name = "Suport",
-            Email = "Suport@email.com",
-            Image = "Suport.png",
-            Slug = "equipe de suporte do mizael Douglas",
-            PasswordHash = "Hh247a8asdasfasgha22124PASA@_FA9#2233#@"
-        };
+            Console.WriteLine($"Usuário com ID {userId} não encontrado.");
+            return;
+        }
 
-        var users = connection.Update<User>(user);
+        Console.WriteLine($"Atualizando usuário {user.Name} ({userId}):");
 
-        Console.WriteLine("Update feito com sucesso!!");
+        // Atualizar nome
+        Console.WriteLine("Digite o novo nome:");
+        user.Name = Console.ReadLine();
+
+        // Atualizar email
+        Console.WriteLine("Digite o novo email:");
+        user.Email = Console.ReadLine();
+        
+        Console.WriteLine("Enter Bio: ");
+        user.Bio = Console.ReadLine()!;
+
+        Console.WriteLine("Enter link image: ");
+        user.Image = Console.ReadLine()!;
+
+        Console.WriteLine("Enter Slug: ");
+        user.Slug = Console.ReadLine()!;
+
+        Console.WriteLine("Enter PasswordHash: ");
+        user.PasswordHash = Console.ReadLine()!;
+
+        int rowsAffected = repository.Update(user);
+
+        if (rowsAffected > 0)
+        {
+            Console.WriteLine("Atualização realizada com sucesso!");
+        }
+        else
+        {
+            Console.WriteLine("Falha ao atualizar o usuário. Verifique os dados e tente novamente.");
+        }
     }
-
+    
     public static void DeleteUser(SqlConnection connection)
     {
-        var user = connection.Get<User>(1);
+        Console.WriteLine("Digite o ID do usuário que deseja excluir:");
+        int userId = int.Parse(Console.ReadLine());
+
+        var user = connection.Get<User>(userId);
+        if (user == null)
+        {
+            Console.WriteLine($"Usuário com ID {userId} não encontrado.");
+            return;
+        }
+        
         connection.Delete<User>(user);
 
         Console.WriteLine($"Usuario {user.Name} deletado com sucesso!!");

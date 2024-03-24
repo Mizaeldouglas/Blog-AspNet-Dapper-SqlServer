@@ -13,15 +13,15 @@ class Program
         connection.Open();
         while (true)
         {
-            Console.WriteLine("User Management System");
+            Console.WriteLine("Sistema de gerenciamento de usuários");
             Console.WriteLine("---------------------");
-            Console.WriteLine("1. Create User");
-            Console.WriteLine("2. Update User");
-            Console.WriteLine("3. Read Users");
-            Console.WriteLine("4. Read User by ID");
-            Console.WriteLine("5. Delete User");
-            Console.WriteLine("6. Exit");
-            Console.Write("Enter your choice: ");    
+            Console.WriteLine("1. Criar Usuário");
+            Console.WriteLine("2. Atualizar Usuário");
+            Console.WriteLine("3. Mostrar todos os Usuários");
+            Console.WriteLine("4. Mostra Usuário Por ID");
+            Console.WriteLine("5. Deletar Usuário");
+            Console.WriteLine("6. Sair");
+            Console.Write("Digite o número que deseja: ");    
             
             string choice = Console.ReadLine()!;
 
@@ -43,17 +43,17 @@ class Program
                     UserController.DeleteUser(connection);
                     break;
                 case "6":
-                    Console.WriteLine("Exiting...");
+                    Console.WriteLine("Saindo...");
                     return;
                 default:
-                    Console.WriteLine("Invalid choice. Please try again.");
+                    Console.WriteLine("Escolha inválida. Por favor, tente novamente.");
                     break;
             }
 
             // Prompt to continue or exit
-            Console.WriteLine("\nDo you want to continue? (y/n)");
+            Console.WriteLine("\nVocê quer continuar? (s/n)");
             string continueChoice = Console.ReadLine()!.ToLower();
-            if (continueChoice != "y")
+            if (continueChoice != "s")
             {
                 break;
             }

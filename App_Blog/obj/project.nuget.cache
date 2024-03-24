@@ -2,7 +2,7 @@
   "version": 2,
   "dgSpecHash": "mTZsI17Vo6oRQUY6xPB47QNLf7H2Q0t91WzFxW6kRGOfFZgd96pWLcbsU+LFwjlmvSxFHVnN+sqOLdxna7XvSg==",
   "success": true,
-  "projectFilePath": "/Users/mizaeldouglasmello/Programação/WorkSpace-DotNet/Balta/curso-balta.io/Blog/App_Blog/App_Blog.csproj",
+  "projectFilePath": "/Users/mizaeldouglasmello/Programação/WorkSpace-DotNet/Balta/curso-balta.io/Blog/App_Blog/App_Blog.csproj",
   "expectedPackageFiles": [
     "/Users/mizaeldouglasmello/.nuget/packages/dapper/2.0.90/dapper.2.0.90.nupkg.sha512",
     "/Users/mizaeldouglasmello/.nuget/packages/dapper.contrib/2.0.78/dapper.contrib.2.0.78.nupkg.sha512",
